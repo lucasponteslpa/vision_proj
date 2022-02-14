@@ -16,8 +16,8 @@ from utils.dice_score import dice_loss
 from evaluate import evaluate
 from unet import UNet
 
-dir_img = Path('./data/imgs/')
-dir_mask = Path('./data/masks/')
+dir_img = Path('./data/membrane/train/image')
+dir_mask = Path('./data/membrane/train/label')
 dir_checkpoint = Path('./checkpoints/')
 
 
