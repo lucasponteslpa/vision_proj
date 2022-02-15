@@ -179,13 +179,15 @@ class DAB(nn.Module):
         bias=True, bn=False, act=nn.ReLU(True)):
 
         super(DAB, self).__init__()
-        modules_body = [conv(n_feat_in, n_feat_conv,kernel_size=3)]
-        modules_body.append(act)
+        conv_module = [conv(n_feat_in, n_feat_conv,kernel_size=3)]
+        conv_module.append(act)
+        modules_body = []
         for i in range(2):
             modules_body.append(conv(n_feat, n_feat, kernel_size, bias=bias))
             if bn: modules_body.append(nn.BatchNorm2d(n_feat))
             if i == 0: modules_body.append(act)
 
+        self.conv_0 = nn.Sequential(*conv_module)
         self.SA = spatial_attn_layer()            ## Spatial Attention
         self.CA = CALayer(n_feat, reduction)     ## Channel Attention
         self.body = nn.Sequential(*modules_body)
@@ -193,7 +195,8 @@ class DAB(nn.Module):
 
 
     def forward(self, x):
-        res = self.body(x)
+        conv_out = self.conv_0(x)
+        res = self.body(conv_out)
         sa_branch = self.SA(res)
         ca_branch = self.CA(res)
         res = torch.cat([sa_branch, ca_branch], dim=1)
