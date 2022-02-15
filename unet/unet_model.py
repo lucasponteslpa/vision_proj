@@ -52,7 +52,7 @@ class UNetAtt(nn.Module):
         self.down3 = DownAtt(256, 512, 512)
         factor = 2 if bilinear else 1
         # self.down4 = Down(512, 1024 // factor)
-        self.down4 = DownAtt(512, 1024 // factor)
+        self.down4 = DownAtt(512, 1024 // factor, 1024 // factor)
         # self.up1 = Up(1024, 512 // factor, bilinear)
         self.up1 = UpAtt(1024, 512 // factor, bilinear)
         # self.up2 = Up(512, 256 // factor, bilinear)
