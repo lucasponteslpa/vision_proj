@@ -201,5 +201,5 @@ class DAB(nn.Module):
         ca_branch = self.CA(res)
         res = torch.cat([sa_branch, ca_branch], dim=1)
         res = self.conv1x1(res)
-        res += x
+        res += conv_out
         return res
